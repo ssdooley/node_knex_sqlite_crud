@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../../database');
 
 router.get('/', function(req, res) {
-   db.select().from('todo').then(function(data) {
+   db.select().from('todo').orderBy('id').then(function(data) {
     res.send(data);
    });
 });
@@ -34,6 +34,18 @@ router.put('/:id', function(req, res) {
          res.send(data);
       })
       
+   });
+})
+
+router.delete('/:id', function(req, res) {
+   db('todo').where('id', req.params.id).del().then(function() {
+      res.json({success: true})
+   })
+})
+
+router.get('/:id', function(req, res) {
+   db('todo').where('id', req.params.id).then(function(data){
+      res.send(data);
    });
 })
 
