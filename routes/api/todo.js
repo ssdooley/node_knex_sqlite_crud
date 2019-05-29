@@ -14,9 +14,26 @@ router.post('/', function(req, res) {
    });
 });
 
+router.patch('/:id', function(req, res) {
+   db('todo').where('id', req.params.id).update(req.body).into('todo').then(function(){
+      db('todo').where('id', req.params.id).then(function(data){
+         res.send(data);
+      })
+      
+   });
+})
+
 router.put('/:id', function(req, res) {
-   db('todo').where('id', req.params.id).update(req.body).into('todo').then(function(data){
-      res.send(data);
+   db('todo').where('id', req.params.id).update(
+      {
+         title: req.body.title || null,
+         is_done: req.body.is_done || null
+      }
+      ).into('todo').then(function(){
+      db('todo').where('id', req.params.id).then(function(data){
+         res.send(data);
+      })
+      
    });
 })
 
